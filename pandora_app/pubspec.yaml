@@ -45,7 +45,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-     - assets/images/logo_1000x1000.png
+    - assets/images/logo001.png
+    - assets/images/basering001.png
+    - assets/images/basering002.png
+    - assets/images/basering003.png
+    - assets/images/basering004.png
+    - assets/images/jewellery001.png
+    - assets/images/jewellery002.png
+    - assets/images/jewellery003.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

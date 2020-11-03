@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pandora_app/menu.dart';
 
-class shopPage extends StatelessWidget {
+class ShopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

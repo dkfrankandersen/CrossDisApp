@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
             appBar: AppBar(title: Text('Pandora Universe')),
             drawer: MainMenuDrawer(),
             body: Center(
-              child: Image.asset('assets/images/logo_1000x1000.png'),
+              child: Image.asset('assets/images/logo001.png'),
             )));
   }
 }

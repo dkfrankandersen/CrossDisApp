@@ -12,13 +12,15 @@ class StatisticsPage extends StatelessWidget {
             appBar: AppBar(title: Text('My Statistics')),
             drawer: MainMenuDrawer(),
             body: Container(
-                height: 400,
+                height: 750,
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
-                    Text('Steps'),
+                    Text('Steps', style: TextStyle(fontSize: 20)),
                     Expanded(child: new TimeSeriesBar.withSampleData()),
-                    Text("Puls"),
+                    Text("Puls", style: TextStyle(fontSize: 20)),
+                    Expanded(child: new PointsLineChart.withSampleData()),
+                    Text("Distance", style: TextStyle(fontSize: 20)),
                     Expanded(child: new PointsLineChart.withSampleData())
                   ],
                 ))));
