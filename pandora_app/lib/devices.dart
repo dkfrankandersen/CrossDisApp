@@ -16,14 +16,31 @@ class DevicesPage extends StatelessWidget {
             body: ListView(
               padding: const EdgeInsets.all(20),
               children: <Widget>[
+                Divider(color: Colors.black),
                 new BaseDeviceContainer(new BaseDevice(
-                    'Moments Ring', '', 'assets/images/basering001.png', 98)),
+                    1,
+                    'Moments Ring',
+                    'Capture the happiness',
+                    'assets/images/basering001.png',
+                    98)),
+                Divider(color: Colors.black),
                 new BaseDeviceContainer(new BaseDevice(
-                    'Contact Ring', '', 'assets/images/basering002.png', 19)),
+                    2,
+                    'Contact Ring',
+                    'Feeling safe is all that matters',
+                    'assets/images/basering002.png',
+                    19)),
+                Divider(color: Colors.black),
                 new BaseDeviceContainer(new BaseDevice(
-                    'Puls Ring', '', 'assets/images/basering003.png', 70)),
-                new BaseDeviceContainer(new BaseDevice(
-                    'My First Ring', '', 'assets/images/basering004.png', -1)),
+                    3,
+                    'Puls Ring',
+                    'Keeping the workout cool',
+                    'assets/images/basering003.png',
+                    70)),
+                Divider(color: Colors.black),
+                new BaseDeviceContainer(new BaseDevice(4, 'My First Ring',
+                    'Making memorys', 'assets/images/basering004.png', -1)),
+                Divider(color: Colors.black),
               ],
             )));
   }
@@ -37,26 +54,41 @@ class BaseDeviceContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 150,
-        color: Colors.white30,
+      height: 150,
+      child: InkWell(
         child: Row(
           children: [
-            Expanded(
-              flex: 2,
+            Container(
+                child: Expanded(
+              flex: 4,
               child: baseDevice.getImage(),
+            )),
+            Expanded(
+              flex: 7,
+              child: Container(
+                  child: Column(children: [
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      baseDevice.getName(),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    )),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      baseDevice.getDescription(),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ))
+              ])),
             ),
             Expanded(
-                flex: 8,
-                child: Column(
+                flex: 2,
+                child: Row(
                   children: [
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          baseDevice.getName(),
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        )),
-                    Row(
+                    Container(
+                        child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         baseDevice.getBatteryIcon(50.0),
@@ -65,10 +97,15 @@ class BaseDeviceContainer extends StatelessWidget {
                           style: TextStyle(fontSize: 18),
                         )
                       ],
-                    )
+                    )),
                   ],
                 ))
           ],
-        ));
+        ),
+        onTap: () {
+          print("tapped on " + baseDevice.getName());
+        },
+      ),
+    );
   }
 }

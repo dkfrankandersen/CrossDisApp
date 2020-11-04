@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class BaseDevice {
+  final int id;
   final String name;
   final String description;
   final String imagePath;
   int battery = -1;
-  BaseDevice(this.name, this.description, this.imagePath, this.battery);
+  BaseDevice(
+      this.id, this.name, this.description, this.imagePath, this.battery);
 
   getBatteryIcon(double size) {
     IconData icon;
