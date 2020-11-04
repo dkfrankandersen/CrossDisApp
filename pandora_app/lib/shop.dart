@@ -11,7 +11,7 @@ class ShopPage extends StatelessWidget {
                 AppBar(title: MenuTextFormat.getAppBarTitleText('Shopping')),
             drawer: MainMenuDrawer(),
             body: Center(
-              child: Text('Shop available soon :)'),
+              child: MenuTextFormat.getTempPageText('Shop available soon :)'),
             )));
   }
 }

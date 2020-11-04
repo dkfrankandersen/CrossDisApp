@@ -13,16 +13,28 @@ class MainMenuDrawer extends StatelessWidget {
         child: ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        DrawerHeader(
-          child: Column(
-            children: [
-              // Image.asset('assets/images/logo001.png'),
-              Text('Menu',
-                  style:
-                      TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold)),
-            ],
+        Container(
+            height: 120,
+            child: DrawerHeader(
+              child: Column(
+                children: [
+                  Text('Menu',
+                      style: TextStyle(
+                          fontSize: 42.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Roboto')),
+                ],
+              ),
+              decoration:
+                  BoxDecoration(color: Color.fromARGB(255, 245, 216, 223)),
+            )),
+        Container(
+          height: 100,
+          alignment: Alignment.topCenter,
+          child: Image.asset(
+            'assets/images/logo001.png',
+            scale: 0.1,
           ),
-          decoration: BoxDecoration(color: Color.fromARGB(255, 245, 216, 223)),
         ),
         MenuListTile('My Profile', 'profile'),
         MenuListTile('My Statistics', 'statistics'),
@@ -68,21 +80,31 @@ class MenuListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        title: Text(title,
-            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.normal)),
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => getPage(page)),
-          );
-        });
+    return Container(
+        height: 65,
+        child: ListTile(
+            title: Text(title,
+                style:
+                    TextStyle(fontSize: 28.0, fontWeight: FontWeight.normal)),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => getPage(page)),
+              );
+            }));
   }
 }
 
 class MenuTextFormat {
   static getAppBarTitleText(String str) {
+    return Text(
+      str,
+      style: TextStyle(fontSize: 28),
+    );
+  }
+
+  static getTempPageText(String str) {
     return Text(
       str,
       style: TextStyle(fontSize: 28),

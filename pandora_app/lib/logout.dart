@@ -11,7 +11,7 @@ class LogoutPage extends StatelessWidget {
                 title: MenuTextFormat.getAppBarTitleText('Logging out...')),
             drawer: MainMenuDrawer(),
             body: Center(
-              child: Text('You have been logged out'),
+              child: MenuTextFormat.getTempPageText('You have been logged out'),
             )));
   }
 }

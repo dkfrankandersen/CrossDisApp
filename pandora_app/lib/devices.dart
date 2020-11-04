@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:pandora_app/Models/BaseDevice.dart';
+import 'package:pandora_app/Models/basedevice.dart';
+import 'package:pandora_app/devicestats.dart';
 import 'package:pandora_app/menu.dart';
+import 'package:pandora_app/Database.dart';
 
 class DevicesPage extends StatelessWidget {
-  // final _Devices = <Devices>[]
+  final List<Widget> deviceWidgets = [];
+  final Database db = new Database();
+  DevicesPage() {
+    // add all to container
+    for (BaseDevice bd in db.baseDevices) {
+      deviceWidgets.add(new BaseDeviceContainer(bd));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,35 +23,7 @@ class DevicesPage extends StatelessWidget {
                 AppBar(title: MenuTextFormat.getAppBarTitleText('My Devices')),
             drawer: MainMenuDrawer(),
             body: ListView(
-              padding: const EdgeInsets.all(20),
-              children: <Widget>[
-                Divider(color: Colors.black),
-                new BaseDeviceContainer(new BaseDevice(
-                    1,
-                    'Moments Ring',
-                    'Capture the happiness',
-                    'assets/images/basering001.png',
-                    98)),
-                Divider(color: Colors.black),
-                new BaseDeviceContainer(new BaseDevice(
-                    2,
-                    'Contact Ring',
-                    'Feeling safe is all that matters',
-                    'assets/images/basering002.png',
-                    19)),
-                Divider(color: Colors.black),
-                new BaseDeviceContainer(new BaseDevice(
-                    3,
-                    'Puls Ring',
-                    'Keeping the workout cool',
-                    'assets/images/basering003.png',
-                    70)),
-                Divider(color: Colors.black),
-                new BaseDeviceContainer(new BaseDevice(4, 'My First Ring',
-                    'Making memorys', 'assets/images/basering004.png', -1)),
-                Divider(color: Colors.black),
-              ],
-            )));
+                padding: const EdgeInsets.all(20), children: deviceWidgets)));
   }
 }
 
@@ -70,14 +51,14 @@ class BaseDeviceContainer extends StatelessWidget {
                 Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      baseDevice.getName(),
+                      baseDevice.name,
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     )),
                 Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      baseDevice.getDescription(),
+                      baseDevice.description,
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ))
@@ -103,7 +84,13 @@ class BaseDeviceContainer extends StatelessWidget {
           ],
         ),
         onTap: () {
-          print("tapped on " + baseDevice.getName());
+          print("tapped on " + baseDevice.name);
+          // Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => new DeviceStatsPage(baseDevice)),
+          );
         },
       ),
     );

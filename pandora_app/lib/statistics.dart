@@ -17,12 +17,18 @@ class StatisticsPage extends StatelessWidget {
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
-                    Text('Steps', style: TextStyle(fontSize: 20)),
+                    Text('Enjoy all your data at one place!',
+                        style: TextStyle(fontSize: 26)),
+                    Divider(color: Colors.black),
+                    Text('Steps', style: TextStyle(fontSize: 24)),
                     Expanded(child: new TimeSeriesBar.withSampleData()),
-                    Text("Puls", style: TextStyle(fontSize: 20)),
+                    Divider(color: Colors.black),
+                    Text("Puls", style: TextStyle(fontSize: 24)),
                     Expanded(child: new PointsLineChart.withSampleData()),
-                    Text("Distance", style: TextStyle(fontSize: 20)),
-                    Expanded(child: new PointsLineChart.withSampleData())
+                    Divider(color: Colors.black),
+                    Text("Distance", style: TextStyle(fontSize: 24)),
+                    Expanded(child: new PointsLineChart.withSampleData()),
+                    Divider(color: Colors.black),
                   ],
                 ))));
   }

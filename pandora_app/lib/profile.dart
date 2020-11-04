@@ -11,7 +11,7 @@ class ProfilePage extends StatelessWidget {
                 AppBar(title: MenuTextFormat.getAppBarTitleText('My profile')),
             drawer: MainMenuDrawer(),
             body: Center(
-              child: Text('ProfilePage'),
+              child: MenuTextFormat.getTempPageText('Your profile is here =)'),
             )));
   }
 }

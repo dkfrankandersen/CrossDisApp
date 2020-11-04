@@ -5,7 +5,9 @@ class BaseDevice {
   final String name;
   final String description;
   final String imagePath;
+  List<int> fitsBaseDevices;
   int battery = -1;
+
   BaseDevice(
       this.id, this.name, this.description, this.imagePath, this.battery);
 
@@ -24,15 +26,7 @@ class BaseDevice {
   }
 
   getBatteryStr() {
-    return battery.toString() + " %";
-  }
-
-  getName() {
-    return name;
-  }
-
-  getDescription() {
-    return description;
+    return this.battery.toString() + " %";
   }
 
   getImage() {
