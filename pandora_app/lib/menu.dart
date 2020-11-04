@@ -28,7 +28,7 @@ class MainMenuDrawer extends StatelessWidget {
         MenuListTile('My Statistics', 'statistics'),
         MenuListTile('My Devices', 'devices'),
         MenuListTile('My Jewellery', 'jewellery'),
-        MenuListTile('My Shopping', 'shopping'),
+        MenuListTile('My Shopping', 'shop'),
         MenuListTile('Logout', 'logout'),
       ],
     ));
@@ -78,5 +78,14 @@ class MenuListTile extends StatelessWidget {
             MaterialPageRoute(builder: (context) => getPage(page)),
           );
         });
+  }
+}
+
+class MenuTextFormat {
+  static getAppBarTitleText(String str) {
+    return Text(
+      str,
+      style: TextStyle(fontSize: 28),
+    );
   }
 }

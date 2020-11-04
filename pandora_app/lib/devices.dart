@@ -10,7 +10,8 @@ class DevicesPage extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
         home: Scaffold(
-            appBar: AppBar(title: Text('My Devices')),
+            appBar:
+                AppBar(title: MenuTextFormat.getAppBarTitleText('My Devices')),
             drawer: MainMenuDrawer(),
             body: ListView(
               padding: const EdgeInsets.all(20),

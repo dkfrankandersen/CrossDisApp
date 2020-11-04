@@ -9,7 +9,8 @@ class StatisticsPage extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
         home: Scaffold(
-            appBar: AppBar(title: Text('My Statistics')),
+            appBar: AppBar(
+                title: MenuTextFormat.getAppBarTitleText('My Statistics')),
             drawer: MainMenuDrawer(),
             body: Container(
                 height: 750,

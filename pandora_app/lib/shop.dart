@@ -7,7 +7,8 @@ class ShopPage extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
         home: Scaffold(
-            appBar: AppBar(title: Text('Shopping')),
+            appBar:
+                AppBar(title: MenuTextFormat.getAppBarTitleText('Shopping')),
             drawer: MainMenuDrawer(),
             body: Center(
               child: Text('Shop available soon :)'),
