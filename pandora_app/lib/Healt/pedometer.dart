@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:pedometer/pedometer.dart';
 import 'package:pandora_app/menu.dart';
+import 'package:pandora_app/database.dart';
 
 String formatDate(DateTime d) {
   return d.toString().substring(0, 19);
@@ -84,6 +85,18 @@ class _MyAppState extends State<StepPage> {
               Text(
                 _steps,
                 style: TextStyle(fontSize: 60),
+              ),
+              FlatButton(
+                textColor: Color(0xFF6200EE),
+                onPressed: () {
+                  // Respond to button press
+                  StepData sd =
+                      new StepData(new DateTime.now(), "U001", _steps);
+                  sd.setId(saveStepCount(sd));
+                  print(
+                      "Saved stepcount, db key: " + sd.getDBIdKey().toString());
+                },
+                child: Text("SAVE STEP COUNT"),
               ),
               Divider(
                 height: 100,

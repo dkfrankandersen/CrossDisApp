@@ -1,5 +1,40 @@
+import 'package:flutter/material.dart';
 import 'package:pandora_app/Models/jewellery.dart';
 import 'package:pandora_app/Models/basedevice.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+final databaseReference = FirebaseDatabase.instance.reference();
+
+DatabaseReference saveStepCount(StepData stepData) {
+  var id = databaseReference.child('steps/').push();
+  id.set(stepData.toJSON());
+  return id;
+}
+
+class StepData {
+  DateTime datetime;
+  String userid;
+  String steps;
+  DatabaseReference _id;
+
+  StepData(DateTime this.datetime, String this.userid, String this.steps);
+
+  setId(DatabaseReference id) {
+    this._id = id;
+  }
+
+  getDBIdKey() {
+    return this._id.key;
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'userid': this.userid,
+      'datetime': this.datetime.toString(),
+      'steps': this.steps
+    };
+  }
+}
 
 class Database {
   final List<JewelleryPiece> jewelleryPieces = [];

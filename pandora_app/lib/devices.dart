@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pandora_app/Models/basedevice.dart';
 import 'package:pandora_app/devicestats.dart';
 import 'package:pandora_app/menu.dart';
-import 'package:pandora_app/Database.dart';
+import 'package:pandora_app/database.dart';
 
 class DevicesPage extends StatelessWidget {
   final List<Widget> deviceWidgets = [];
