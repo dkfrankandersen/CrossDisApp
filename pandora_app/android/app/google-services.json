@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "517226497558",
+    "firebase_url": "https://crossdis-pandoraapp.firebaseio.com",
+    "project_id": "crossdis-pandoraapp",
+    "storage_bucket": "crossdis-pandoraapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517226497558:android:d78eb0c0a8729350425737",
+        "android_client_info": {
+          "package_name": "dk.netpad.pandora_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517226497558-3h063im5831opkegq593jm3blbem47h6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.netpad.pandora_app",
+            "certificate_hash": "4044078c9f19ae016332b70b1eb333f9ae1b4fe4"
+          }
+        },
+        {
+          "client_id": "517226497558-tmjpl7uhbl8gnsh8iapkckski8ccpm45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBs_XQ_-dlRRyEmFElm9V--sI62GEmARw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517226497558-tmjpl7uhbl8gnsh8iapkckski8ccpm45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
