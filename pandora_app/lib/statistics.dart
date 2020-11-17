@@ -2,10 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:pandora_app/menu.dart';
 import 'package:pandora_app/chartbarsdemo.dart';
 import 'package:pandora_app/chartpointsdemo.dart';
+import 'package:pandora_app/database.dart';
+
+
 
 class StatisticsPage extends StatelessWidget {
+  List<StepData> stepDataLst = [];
+
+  // void sdsds() {
+  //     getAllStepCount().then(stepDataLst) => {
+  //       this.setState(() {
+  //           this.stepDataLst = stepDataLst;
+  //       })
+  //     });
+  // }
+
   @override
   Widget build(BuildContext context) {
+    getAllStepCount();
     return MaterialApp(
         theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
         home: Scaffold(

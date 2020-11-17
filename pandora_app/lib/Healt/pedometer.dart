@@ -4,6 +4,8 @@ import 'package:pedometer/pedometer.dart';
 import 'package:pandora_app/menu.dart';
 import 'package:pandora_app/database.dart';
 
+final userid = 'demoUser';
+
 String formatDate(DateTime d) {
   return d.toString().substring(0, 19);
 }
@@ -17,7 +19,6 @@ class _MyAppState extends State<StepPage> {
   Stream<StepCount> _stepCountStream;
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _steps = '?';
-
   @override
   void initState() {
     super.initState();
@@ -65,6 +66,15 @@ class _MyAppState extends State<StepPage> {
     if (!mounted) return;
   }
 
+  void saveUserStepsToDB() {
+    // && (_status != 'walking' || _status == 'stopped')
+    if (_steps != '?') {
+      StepData sd = new StepData(userid, new DateTime.now(), _steps);
+      sd.setId(saveStepCount(sd));
+      print("Saved stepcount, db key: " + sd.getDBIdKey().toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -79,6 +89,10 @@ class _MyAppState extends State<StepPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
+                'User: ' + userid,
+                style: TextStyle(fontSize: 40),
+              ),
+              Text(
                 'Steps taken:',
                 style: TextStyle(fontSize: 30),
               ),
@@ -90,11 +104,7 @@ class _MyAppState extends State<StepPage> {
                 textColor: Color(0xFF6200EE),
                 onPressed: () {
                   // Respond to button press
-                  StepData sd =
-                      new StepData(new DateTime.now(), "U001", _steps);
-                  sd.setId(saveStepCount(sd));
-                  print(
-                      "Saved stepcount, db key: " + sd.getDBIdKey().toString());
+                  saveUserStepsToDB();
                 },
                 child: Text("SAVE STEP COUNT"),
               ),

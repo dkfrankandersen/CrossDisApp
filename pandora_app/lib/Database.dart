@@ -1,14 +1,37 @@
-import 'package:flutter/material.dart';
 import 'package:pandora_app/Models/jewellery.dart';
 import 'package:pandora_app/Models/basedevice.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
+final userid = 'demoUser';
 
 DatabaseReference saveStepCount(StepData stepData) {
-  var id = databaseReference.child('steps/').push();
+  var id = databaseReference.child('users/' + userid + '/steps/').push();
   id.set(stepData.toJSON());
   return id;
+}
+
+StepData createStepData(Map<dynamic, dynamic>record) {
+  DateTime dt = DateTime.parse(record['datetime']);
+  StepData sd = new StepData(userid, dt, record['steps']);
+  return sd;
+}
+
+Future<List<StepData>> getAllStepCount() async {
+  print("Hello from getAllStepCount, user: " + userid);
+  DataSnapshot snapshot = await databaseReference.child('users/' + userid + '/steps').once();
+  List<StepData> stepDataLst = [];
+  if (snapshot.value != null) {
+
+    for (var key in snapshot.value.keys) {
+      StepData sd = createStepData(snapshot.value[key]);
+      sd.setId(databaseReference.child('users/' + userid + '/steps/' + key));
+      stepDataLst.add(sd);
+    } 
+  } else {
+    print("No stepdata for user...");
+  }
+  return stepDataLst;
 }
 
 class StepData {
@@ -17,7 +40,7 @@ class StepData {
   String steps;
   DatabaseReference _id;
 
-  StepData(DateTime this.datetime, String this.userid, String this.steps);
+  StepData(String this.userid, DateTime this.datetime, String this.steps);
 
   setId(DatabaseReference id) {
     this._id = id;
@@ -28,11 +51,7 @@ class StepData {
   }
 
   Map<String, dynamic> toJSON() {
-    return {
-      'userid': this.userid,
-      'datetime': this.datetime.toString(),
-      'steps': this.steps
-    };
+    return {'datetime': this.datetime.toString(), 'steps': this.steps};
   }
 }
 
