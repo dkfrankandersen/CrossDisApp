@@ -6,7 +6,7 @@ class StepData {
   String steps;
   DatabaseReference _id;
 
-  StepData(String this.userid, DateTime this.datetime, String this.steps);
+  StepData(this.userid, this.datetime, this.steps);
 
   setId(DatabaseReference id) {
     this._id = id;

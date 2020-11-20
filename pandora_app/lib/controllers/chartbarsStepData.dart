@@ -29,16 +29,10 @@ class StepDataBar extends StatelessWidget {
   /// Create one series with sample hard coded data.
   static List<charts.Series<TimeSeriesSteps, DateTime>> createTimeSeries(
       List<StepData> stepDataLst) {
-    print("Create TimeSeriesSteps");
-    // final data = [
-    //   for (StepData sd in stepDataLst)
-    //     new TimeSeriesSteps(sd.datetime, int.tryParse(sd.steps))
-    // ];
     List<TimeSeriesSteps> data = [];
     int last = int.tryParse(stepDataLst[0].steps);
     for (StepData sd in stepDataLst) {
       int steps = int.tryParse(sd.steps);
-      print("last " + last.toString() + " steps" + steps.toString());
       data.add(new TimeSeriesSteps(sd.datetime, steps - last));
       last = steps;
     }

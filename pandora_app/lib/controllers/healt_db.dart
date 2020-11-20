@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:pandora_app/models/step_data.dart';
 import 'package:pandora_app/models/user.dart';
+import 'package:intl/intl.dart';
 
 class HealtDatabase {
   DatabaseReference _dbRef;
@@ -8,12 +9,33 @@ class HealtDatabase {
 
   HealtDatabase(DatabaseReference dbRef, User user) {
     this._dbRef = dbRef;
-    userId = user.userId;
+    this.userId = user.userId;
   }
 
-  DatabaseReference saveStepCount(StepData stepData) {
-    var id = this._dbRef.child('users/' + this.userId + '/steps/').push();
-    id.set(stepData.toJSON());
+  String _minutInterVal(int minVal) {
+    if (minVal >= 45 && minVal <= 60) {
+      return '45';
+    } else if (minVal >= 30) {
+      return '30';
+    } else if (minVal >= 15) {
+      return '15';
+    } else if (minVal >= 0) {
+      return '0';
+    } else {
+      throw new FormatException('Wrong format, minut interval should be 0..60');
+    }
+  }
+
+  DatabaseReference saveStepCount(StepData sd) {
+    String dtChild = DateFormat('yyyy/MM/dd/kk').format(sd.datetime);
+    String minIntVal = _minutInterVal(sd.datetime.minute);
+    String refPath =
+        'users/' + this.userId + '/steps/' + dtChild + '/' + minIntVal;
+    // DataSnapshot snapshot =
+    //     await this._dbRef.child(refPath).once();
+
+    var id = this._dbRef.child(refPath).push();
+    id.set(sd.toJSON());
     return id;
   }
 
@@ -24,7 +46,6 @@ class HealtDatabase {
   }
 
   Future<List<StepData>> getAllStepCount() async {
-    print("Hello from getAllStepCount, user: " + this.userId);
     DataSnapshot snapshot =
         await this._dbRef.child('users/' + this.userId + '/steps').once();
     List<StepData> stepDataLst = [];
