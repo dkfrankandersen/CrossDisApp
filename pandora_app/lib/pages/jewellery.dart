@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:pandora_app/Models/basedevice.dart';
-import 'package:pandora_app/devicestats.dart';
-import 'package:pandora_app/menu.dart';
-import 'package:pandora_app/database.dart';
+import 'package:pandora_app/controllers/database.dart';
+import 'package:pandora_app/views/menu.dart';
+import 'package:pandora_app/models/jewellery.dart';
 
-class DevicesPage extends StatelessWidget {
+class JewelleryPage extends StatelessWidget {
   final List<Widget> deviceWidgets = [];
-  final Database db = new Database();
-  DevicesPage() {
+
+  JewelleryPage() {
     // add all to container
-    for (BaseDevice bd in db.baseDevices) {
-      deviceWidgets.add(new BaseDeviceContainer(bd));
+    for (JewelleryPiece jp in appDB.items.getJewelleryPieces()) {
+      deviceWidgets.add(new JewelleryContainer(jp));
     }
   }
 
@@ -19,18 +18,18 @@ class DevicesPage extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
         home: Scaffold(
-            appBar:
-                AppBar(title: MenuTextFormat.getAppBarTitleText('My Devices')),
+            appBar: AppBar(
+                title: MenuTextFormat.getAppBarTitleText('My Jewellery')),
             drawer: MainMenuDrawer(),
             body: ListView(
                 padding: const EdgeInsets.all(20), children: deviceWidgets)));
   }
 }
 
-class BaseDeviceContainer extends StatelessWidget {
-  final BaseDevice baseDevice;
+class JewelleryContainer extends StatelessWidget {
+  final JewelleryPiece jewellery;
 
-  BaseDeviceContainer(this.baseDevice);
+  JewelleryContainer(this.jewellery);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class BaseDeviceContainer extends StatelessWidget {
             Container(
                 child: Expanded(
               flex: 4,
-              child: baseDevice.getImage(),
+              child: jewellery.getImage(),
             )),
             Expanded(
               flex: 7,
@@ -51,14 +50,14 @@ class BaseDeviceContainer extends StatelessWidget {
                 Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      baseDevice.name,
+                      jewellery.name,
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     )),
                 Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      baseDevice.description,
+                      jewellery.description,
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ))
@@ -66,31 +65,20 @@ class BaseDeviceContainer extends StatelessWidget {
             ),
             Expanded(
                 flex: 2,
-                child: Row(
-                  children: [
-                    Container(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        baseDevice.getBatteryIcon(50.0),
-                        Text(
-                          baseDevice.getBatteryStr(),
-                          style: TextStyle(fontSize: 18),
-                        )
-                      ],
-                    )),
-                  ],
+                child: Text(
+                  'Owns',
+                  style: TextStyle(fontSize: 18),
                 ))
           ],
         ),
         onTap: () {
-          print("tapped on " + baseDevice.name);
+          print("tapped on " + jewellery.name);
           // Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => new DeviceStatsPage(baseDevice)),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => new JewellerAccessoryPage(jewellery)),
+          // );
         },
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pandora_app/menu.dart';
+import 'package:pandora_app/views/menu.dart';
 
 void main() => runApp(MyApp());
 

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:pandora_app/menu.dart';
-import 'package:pandora_app/Models/jewellery.dart';
-import 'package:pandora_app/database.dart';
+import 'package:pandora_app/controllers/database.dart';
+import 'package:pandora_app/models/basedevice.dart';
+import 'package:pandora_app/pages/devicestats.dart';
+import 'package:pandora_app/views/menu.dart';
 
-class JewelleryPage extends StatelessWidget {
+class DevicesPage extends StatelessWidget {
   final List<Widget> deviceWidgets = [];
-  final Database db = new Database();
-
-  JewelleryPage() {
+  DevicesPage() {
     // add all to container
-    for (JewelleryPiece jp in db.jewelleryPieces) {
-      deviceWidgets.add(new JewelleryContainer(jp));
+    for (BaseDevice bd in appDB.items.getBaseDevices()) {
+      deviceWidgets.add(new BaseDeviceContainer(bd));
     }
   }
 
@@ -19,18 +18,18 @@ class JewelleryPage extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
         home: Scaffold(
-            appBar: AppBar(
-                title: MenuTextFormat.getAppBarTitleText('My Jewellery')),
+            appBar:
+                AppBar(title: MenuTextFormat.getAppBarTitleText('My Devices')),
             drawer: MainMenuDrawer(),
             body: ListView(
                 padding: const EdgeInsets.all(20), children: deviceWidgets)));
   }
 }
 
-class JewelleryContainer extends StatelessWidget {
-  final JewelleryPiece jewellery;
+class BaseDeviceContainer extends StatelessWidget {
+  final BaseDevice baseDevice;
 
-  JewelleryContainer(this.jewellery);
+  BaseDeviceContainer(this.baseDevice);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class JewelleryContainer extends StatelessWidget {
             Container(
                 child: Expanded(
               flex: 4,
-              child: jewellery.getImage(),
+              child: baseDevice.getImage(),
             )),
             Expanded(
               flex: 7,
@@ -51,14 +50,14 @@ class JewelleryContainer extends StatelessWidget {
                 Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      jewellery.name,
+                      baseDevice.name,
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     )),
                 Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      jewellery.description,
+                      baseDevice.description,
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ))
@@ -66,20 +65,31 @@ class JewelleryContainer extends StatelessWidget {
             ),
             Expanded(
                 flex: 2,
-                child: Text(
-                  'Owns',
-                  style: TextStyle(fontSize: 18),
+                child: Row(
+                  children: [
+                    Container(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        baseDevice.getBatteryIcon(50.0),
+                        Text(
+                          baseDevice.getBatteryStr(),
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ],
+                    )),
+                  ],
                 ))
           ],
         ),
         onTap: () {
-          print("tapped on " + jewellery.name);
+          print("tapped on " + baseDevice.name);
           // Navigator.pop(context);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context) => new JewellerAccessoryPage(jewellery)),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => new DeviceStatsPage(baseDevice)),
+          );
         },
       ),
     );

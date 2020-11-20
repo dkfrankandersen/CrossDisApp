@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pandora_app/Models/basedevice.dart';
-import 'package:pandora_app/menu.dart';
-import 'package:pandora_app/chartbarsdemo.dart';
-import 'package:pandora_app/chartpointsdemo.dart';
+import 'package:pandora_app/models/basedevice.dart';
+import 'package:pandora_app/views/menu.dart';
+import 'package:pandora_app/controllers/chartbarsdemo.dart';
+import 'package:pandora_app/controllers/chartpointsdemo.dart';
 
 class DeviceStatsPage extends StatelessWidget {
   final BaseDevice baseDevice;

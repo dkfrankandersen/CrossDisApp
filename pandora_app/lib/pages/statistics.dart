@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:pandora_app/menu.dart';
-import 'package:pandora_app/chartbarsdemo.dart';
-import 'package:pandora_app/chartpointsdemo.dart';
-import 'package:pandora_app/database.dart';
-
-
+import 'package:pandora_app/controllers/chartbarsStepData.dart';
+import 'package:pandora_app/controllers/database.dart';
+import 'package:pandora_app/models/step_data.dart';
+import 'package:pandora_app/views/menu.dart';
+import 'package:pandora_app/controllers/chartpointsdemo.dart';
 
 class StatisticsPage extends StatelessWidget {
-  List<StepData> stepDataLst = [];
-
-  // void sdsds() {
-  //     getAllStepCount().then(stepDataLst) => {
-  //       this.setState(() {
-  //           this.stepDataLst = stepDataLst;
-  //       })
-  //     });
-  // }
-
   @override
   Widget build(BuildContext context) {
-    getAllStepCount();
+    print("StatisticsPage loading");
     return MaterialApp(
         theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
         home: Scaffold(
@@ -35,7 +24,19 @@ class StatisticsPage extends StatelessWidget {
                         style: TextStyle(fontSize: 26)),
                     Divider(color: Colors.black),
                     Text('Steps', style: TextStyle(fontSize: 24)),
-                    Expanded(child: new TimeSeriesBar.withSampleData()),
+                    // Expanded(child: new TimeSeriesBar.withSampleData()),
+                    FutureBuilder<List<StepData>>(
+                      future: appDB.healt.getAllStepCount(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return Expanded(
+                              child: new StepDataBar(
+                                  StepDataBar.createTimeSeries(snapshot.data)));
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    ),
                     Divider(color: Colors.black),
                     Text("Puls", style: TextStyle(fontSize: 24)),
                     Expanded(child: new PointsLineChart.withSampleData()),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pandora_app/profile.dart';
-import 'package:pandora_app/logout.dart';
-import 'package:pandora_app/shop.dart';
-import 'package:pandora_app/statistics.dart';
-import 'package:pandora_app/devices.dart';
-import 'package:pandora_app/jewellery.dart';
-import 'package:pandora_app/Healt/pedometer.dart';
+import 'package:pandora_app/pages/profile.dart';
+import 'package:pandora_app/pages/logout.dart';
+import 'package:pandora_app/pages/shop.dart';
+import 'package:pandora_app/pages/statistics.dart';
+import 'package:pandora_app/pages/devices.dart';
+import 'package:pandora_app/pages/jewellery.dart';
+import 'package:pandora_app/controllers/pedometer.dart';
 
 class MainMenuDrawer extends StatelessWidget {
   @override

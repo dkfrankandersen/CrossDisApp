@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pandora_app/models/step_data.dart';
 import 'dart:async';
 import 'package:pedometer/pedometer.dart';
-import 'package:pandora_app/menu.dart';
-import 'package:pandora_app/database.dart';
-
-final userid = 'demoUser';
+import 'package:pandora_app/views/menu.dart';
+import 'package:pandora_app/controllers/database.dart';
+import 'package:workmanager/workmanager.dart';
 
 String formatDate(DateTime d) {
   return d.toString().substring(0, 19);
@@ -19,6 +19,8 @@ class _MyAppState extends State<StepPage> {
   Stream<StepCount> _stepCountStream;
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _steps = '?';
+  String _lastStepsSaved = '';
+
   @override
   void initState() {
     super.initState();
@@ -67,10 +69,12 @@ class _MyAppState extends State<StepPage> {
   }
 
   void saveUserStepsToDB() {
-    // && (_status != 'walking' || _status == 'stopped')
-    if (_steps != '?') {
-      StepData sd = new StepData(userid, new DateTime.now(), _steps);
-      sd.setId(saveStepCount(sd));
+    if (int.tryParse(_steps) != null &&
+        _lastStepsSaved != _steps &&
+        _status == 'stopped') {
+      StepData sd = new StepData(appDB.user.userId, new DateTime.now(), _steps);
+      sd.setId(appDB.healt.saveStepCount(sd));
+      _lastStepsSaved = _steps;
       print("Saved stepcount, db key: " + sd.getDBIdKey().toString());
     }
   }
@@ -89,7 +93,7 @@ class _MyAppState extends State<StepPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'User: ' + userid,
+                'User: ' + appDB.user.userId,
                 style: TextStyle(fontSize: 40),
               ),
               Text(
