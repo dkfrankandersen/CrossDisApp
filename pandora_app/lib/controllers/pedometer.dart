@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:pandora_app/models/step_data.dart';
 import 'dart:async';
@@ -38,6 +39,7 @@ class _MyAppState extends State<StepPage> {
     print(event);
     setState(() {
       _status = event.status;
+      saveUserStepsToDB();
     });
   }
 
@@ -73,9 +75,18 @@ class _MyAppState extends State<StepPage> {
         _lastStepsSaved != _steps &&
         _status == 'stopped') {
       StepData sd = new StepData(appDB.user.userId, new DateTime.now(), _steps);
-      sd.setId(appDB.healt.saveStepCount(sd));
-      _lastStepsSaved = _steps;
-      print("Saved stepcount, db key: " + sd.getDBIdKey().toString());
+      FutureBuilder<DatabaseReference> refId = FutureBuilder<DatabaseReference>(
+        future: appDB.healt.saveStepCount(sd),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            print("Saved stepcount, db key: " + sd.getDBIdKey().toString());
+            _lastStepsSaved = _steps;
+            return sd.setId(snapshot.data);
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
+      );
     }
   }
 
@@ -136,7 +147,7 @@ class _MyAppState extends State<StepPage> {
                       ? TextStyle(fontSize: 30)
                       : TextStyle(fontSize: 20, color: Colors.red),
                 ),
-              )
+              ),
             ],
           ),
         ),

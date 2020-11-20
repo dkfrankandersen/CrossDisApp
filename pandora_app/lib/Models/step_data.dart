@@ -16,8 +16,12 @@ class StepData {
     return this._id.key;
   }
 
-  Map<String, dynamic> toJSON() {
-    return {'datetime': this.datetime.toString(), 'steps': this.steps};
+  String formatDate(DateTime d) {
+    return d.toString().substring(0, 19);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'datetime': formatDate(this.datetime), 'steps': this.steps};
   }
 
   @override

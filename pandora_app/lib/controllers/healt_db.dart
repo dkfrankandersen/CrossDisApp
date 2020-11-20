@@ -26,17 +26,20 @@ class HealtDatabase {
     }
   }
 
-  DatabaseReference saveStepCount(StepData sd) {
+  Future<DatabaseReference> saveStepCount(StepData sd) async {
     String dtChild = DateFormat('yyyy/MM/dd/kk').format(sd.datetime);
     String minIntVal = _minutInterVal(sd.datetime.minute);
     String refPath =
         'users/' + this.userId + '/steps/' + dtChild + '/' + minIntVal;
-    // DataSnapshot snapshot =
-    //     await this._dbRef.child(refPath).once();
 
-    var id = this._dbRef.child(refPath).push();
-    id.set(sd.toJSON());
-    return id;
+    // DataSnapshot snapshot = await this._dbRef.child(refPath).once();
+    // if (snapshot.value == null) {
+    //   var id = this._dbRef.child(refPath).push();
+    //   id.set(sd.toJSON());
+    //   return id;
+    // } else {
+    this._dbRef.child(refPath).set(sd.toJson());
+    // }
   }
 
   StepData _createStepData(Map<dynamic, dynamic> record) {
