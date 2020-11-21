@@ -24,12 +24,9 @@ class StatisticsPage extends StatelessWidget {
                     Text('Enjoy all your data at one place!',
                         style: TextStyle(fontSize: 26)),
                     Divider(color: Colors.black),
-                    Text('Steps', style: TextStyle(fontSize: 24)),
-                    // Expanded(child: new TimeSeriesBar.withSampleData()),
+                    Text('Steps Today', style: TextStyle(fontSize: 24)),
                     FutureBuilder<List<StepData>>(
-                      future: db
-                          .healt
-                          .getStepDataPrDay(new DateTime.now()),
+                      future: db.healt.getStepDataPerDay(new DateTime.now()),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
                           return Expanded(

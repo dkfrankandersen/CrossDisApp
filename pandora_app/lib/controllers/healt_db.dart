@@ -63,8 +63,8 @@ class HealtDatabase {
     }
   }
 
-  Future<List<StepData>> getStepDataPrDay(DateTime dt) async {
-    String dtChild = DateFormat('yyyy/MM/HH').format(dt);
+  Future<List<StepData>> getStepDataPerDay(DateTime dt) async {
+    String dtChild = DateFormat('yyyy/MM/dd').format(dt);
     String path = _refUserSteps + dtChild;
     DataSnapshot snapshot = await this._dbRef.child(path).once();
     List<StepData> lst = [];
