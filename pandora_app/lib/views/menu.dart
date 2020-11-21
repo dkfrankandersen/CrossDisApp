@@ -6,6 +6,7 @@ import 'package:pandora_app/pages/statistics.dart';
 import 'package:pandora_app/pages/devices.dart';
 import 'package:pandora_app/pages/jewellery.dart';
 import 'package:pandora_app/controllers/pedometer.dart';
+import 'package:pandora_app/pages/test.dart';
 
 class MainMenuDrawer extends StatelessWidget {
   @override
@@ -44,6 +45,7 @@ class MainMenuDrawer extends StatelessWidget {
         MenuListTile('My Shopping', 'shop'),
         MenuListTile('Logout', 'logout'),
         MenuListTile('Steps', 'steps'),
+        MenuListTile('Test page', 'test'),
       ],
     ));
   }
@@ -78,6 +80,9 @@ class MenuListTile extends StatelessWidget {
       case 'steps':
         return StepPage();
         break;
+      case 'test':
+        return TestPage();
+        break;
       default:
         return ProfilePage();
     }
@@ -92,8 +97,8 @@ class MenuListTile extends StatelessWidget {
                 style:
                     TextStyle(fontSize: 28.0, fontWeight: FontWeight.normal)),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
+              // Navigator.pop(context);
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => getPage(page)),
               );

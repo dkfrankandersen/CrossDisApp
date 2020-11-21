@@ -5,10 +5,11 @@ import 'package:pandora_app/models/jewellery.dart';
 
 class JewelleryPage extends StatelessWidget {
   final List<Widget> deviceWidgets = [];
+  Database db = new Database();
 
   JewelleryPage() {
     // add all to container
-    for (JewelleryPiece jp in appDB.items.getJewelleryPieces()) {
+    for (JewelleryPiece jp in db.items.getJewelleryPieces()) {
       deviceWidgets.add(new JewelleryContainer(jp));
     }
   }

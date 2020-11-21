@@ -1,15 +1,21 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:pandora_app/models/step_data.dart';
 import 'package:pandora_app/models/user.dart';
 import 'package:intl/intl.dart';
 
 class HealtDatabase {
   DatabaseReference _dbRef;
-  String userId;
+  User _user;
+  String _userId;
+  String _refUserSteps;
+  List<StepData> sdLst = [];
 
   HealtDatabase(DatabaseReference dbRef, User user) {
     this._dbRef = dbRef;
-    this.userId = user.userId;
+    this._user = user;
+    this._userId = user.userId;
+    this._refUserSteps = 'users/' + this._userId + '/steps/';
   }
 
   String _minutInterVal(int minVal) {
@@ -26,42 +32,35 @@ class HealtDatabase {
     }
   }
 
-  Future<DatabaseReference> saveStepCount(StepData sd) async {
-    String dtChild = DateFormat('yyyy/MM/dd/kk').format(sd.datetime);
+  Future<void> saveStepCount(StepData sd) async {
+    String dtChild = DateFormat('yyyy/MM/dd/HH').format(sd.datetime);
     String minIntVal = _minutInterVal(sd.datetime.minute);
     String refPath =
-        'users/' + this.userId + '/steps/' + dtChild + '/' + minIntVal;
-
-    // DataSnapshot snapshot = await this._dbRef.child(refPath).once();
-    // if (snapshot.value == null) {
-    //   var id = this._dbRef.child(refPath).push();
-    //   id.set(sd.toJSON());
-    //   return id;
-    // } else {
+        'users/' + this._userId + '/steps/' + dtChild + '/' + minIntVal;
+    print("sd: ${sd.datetime} - ${sd.steps}");
     this._dbRef.child(refPath).set(sd.toJson());
-    // }
   }
 
   StepData _createStepData(Map<dynamic, dynamic> record) {
     DateTime dt = DateTime.parse(record['datetime']);
-    StepData sd = new StepData(this.userId, dt, record['steps']);
+    StepData sd = new StepData(this._userId, dt, record['steps']);
     return sd;
   }
 
-  Future<List<StepData>> getAllStepCount() async {
-    DataSnapshot snapshot =
-        await this._dbRef.child('users/' + this.userId + '/steps').once();
-    List<StepData> stepDataLst = [];
+  Future<List<StepData>> getStepDataPrDay(DateTime dt) async {
+    String dtChild = DateFormat('yyyy/MM/HH').format(dt);
+    String path = _refUserSteps + dtChild;
+    print(path);
+    DataSnapshot snapshot = await this._dbRef.child(path).once();
+    List<StepData> lst = [];
     if (snapshot.value != null) {
-      for (var key in snapshot.value.keys) {
-        StepData sd = _createStepData(snapshot.value[key]);
-        sd.setId(this._dbRef.child('users/' + this.userId + '/steps/' + key));
-        stepDataLst.add(sd);
-      }
-      stepDataLst.sort((a, b) => a.datetime.compareTo(b.datetime));
-    } else {
-      print("No stepdata for user...");
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((k1, v1) {
+        v1.forEach((k2, v2) {
+          lst.add(_createStepData(v2));
+        });
+      });
     }
-    return stepDataLst;
+    return lst;
   }
 }

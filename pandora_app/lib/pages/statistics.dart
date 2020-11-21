@@ -6,6 +6,7 @@ import 'package:pandora_app/views/menu.dart';
 import 'package:pandora_app/controllers/chartpointsdemo.dart';
 
 class StatisticsPage extends StatelessWidget {
+  Database db = new Database();
   @override
   Widget build(BuildContext context) {
     print("StatisticsPage loading");
@@ -26,7 +27,9 @@ class StatisticsPage extends StatelessWidget {
                     Text('Steps', style: TextStyle(fontSize: 24)),
                     // Expanded(child: new TimeSeriesBar.withSampleData()),
                     FutureBuilder<List<StepData>>(
-                      future: appDB.healt.getAllStepCount(),
+                      future: db
+                          .healt
+                          .getStepDataPrDay(new DateTime.now()),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
                           return Expanded(
@@ -38,12 +41,12 @@ class StatisticsPage extends StatelessWidget {
                       },
                     ),
                     Divider(color: Colors.black),
-                    Text("Puls", style: TextStyle(fontSize: 24)),
-                    Expanded(child: new PointsLineChart.withSampleData()),
-                    Divider(color: Colors.black),
-                    Text("Distance", style: TextStyle(fontSize: 24)),
-                    Expanded(child: new PointsLineChart.withSampleData()),
-                    Divider(color: Colors.black),
+                    // Text("Puls", style: TextStyle(fontSize: 24)),
+                    // Expanded(child: new PointsLineChart.withSampleData()),
+                    // Divider(color: Colors.black),
+                    // Text("Distance", style: TextStyle(fontSize: 24)),
+                    // Expanded(child: new PointsLineChart.withSampleData()),
+                    // Divider(color: Colors.black),
                   ],
                 ))));
   }

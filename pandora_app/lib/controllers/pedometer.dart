@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:pedometer/pedometer.dart';
 import 'package:pandora_app/views/menu.dart';
 import 'package:pandora_app/controllers/database.dart';
-import 'package:workmanager/workmanager.dart';
 
 String formatDate(DateTime d) {
   return d.toString().substring(0, 19);
@@ -20,7 +19,9 @@ class _MyAppState extends State<StepPage> {
   Stream<StepCount> _stepCountStream;
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _steps = '?';
-  String _lastStepsSaved = '';
+  String _last = '?';
+  List<String> _stepUpdated = [];
+  Database db = new Database();
 
   @override
   void initState() {
@@ -39,7 +40,9 @@ class _MyAppState extends State<StepPage> {
     print(event);
     setState(() {
       _status = event.status;
-      saveUserStepsToDB();
+      if (_status == 'stopped') {
+        _updateSteps(_steps, _last);
+      }
     });
   }
 
@@ -70,23 +73,34 @@ class _MyAppState extends State<StepPage> {
     if (!mounted) return;
   }
 
-  void saveUserStepsToDB() {
-    if (int.tryParse(_steps) != null &&
-        _lastStepsSaved != _steps &&
-        _status == 'stopped') {
-      StepData sd = new StepData(appDB.user.userId, new DateTime.now(), _steps);
-      FutureBuilder<DatabaseReference> refId = FutureBuilder<DatabaseReference>(
-        future: appDB.healt.saveStepCount(sd),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            print("Saved stepcount, db key: " + sd.getDBIdKey().toString());
-            _lastStepsSaved = _steps;
-            return sd.setId(snapshot.data);
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
-      );
+  String _setLastStep(String steps, String last) {
+    int l = int.tryParse(last);
+    int s = int.tryParse(steps);
+    if (l == null) {
+      _stepUpdated.add('pl:null');
+      return null;
+    }
+    if (s != null) {
+      _stepUpdated.add('ps:null');
+      return null;
+    }
+    return (l - s).toString();
+  }
+
+  void _updateSteps(String steps, String last) {
+    if (steps == last) {
+      _stepUpdated.add('s==k');
+      return;
+    }
+    String s = _setLastStep(steps, last);
+    if (s != null) {
+      DateTime dt = new DateTime.now();
+      StepData sd = new StepData(db.user.userId, dt, s);
+      db.healt.saveStepCount(sd);
+      _stepUpdated.add('update');
+      _last = steps;
+    } else {
+      _stepUpdated.add('s:null');
     }
   }
 
@@ -96,7 +110,7 @@ class _MyAppState extends State<StepPage> {
       theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
       home: Scaffold(
         appBar: AppBar(
-          title: MenuTextFormat.getAppBarTitleText('My profile'),
+          title: MenuTextFormat.getAppBarTitleText('Steps'),
         ),
         drawer: MainMenuDrawer(),
         body: Center(
@@ -104,7 +118,7 @@ class _MyAppState extends State<StepPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'User: ' + appDB.user.userId,
+                'User: ' + db.user.userId,
                 style: TextStyle(fontSize: 40),
               ),
               Text(
@@ -114,14 +128,6 @@ class _MyAppState extends State<StepPage> {
               Text(
                 _steps,
                 style: TextStyle(fontSize: 60),
-              ),
-              FlatButton(
-                textColor: Color(0xFF6200EE),
-                onPressed: () {
-                  // Respond to button press
-                  saveUserStepsToDB();
-                },
-                child: Text("SAVE STEP COUNT"),
               ),
               Divider(
                 height: 100,
@@ -144,6 +150,14 @@ class _MyAppState extends State<StepPage> {
                 child: Text(
                   _status,
                   style: _status == 'walking' || _status == 'stopped'
+                      ? TextStyle(fontSize: 30)
+                      : TextStyle(fontSize: 20, color: Colors.red),
+                ),
+              ),
+              Center(
+                child: Text(
+                  _stepUpdated.toString(),
+                  style: _stepUpdated.isNotEmpty
                       ? TextStyle(fontSize: 30)
                       : TextStyle(fontSize: 20, color: Colors.red),
                 ),

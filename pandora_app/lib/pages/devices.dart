@@ -6,9 +6,10 @@ import 'package:pandora_app/views/menu.dart';
 
 class DevicesPage extends StatelessWidget {
   final List<Widget> deviceWidgets = [];
+  Database db = new Database();
   DevicesPage() {
     // add all to container
-    for (BaseDevice bd in appDB.items.getBaseDevices()) {
+    for (BaseDevice bd in db.items.getBaseDevices()) {
       deviceWidgets.add(new BaseDeviceContainer(bd));
     }
   }
