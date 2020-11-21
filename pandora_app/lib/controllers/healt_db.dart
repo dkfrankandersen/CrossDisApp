@@ -71,9 +71,13 @@ class HealtDatabase {
     if (snapshot.value != null) {
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((k1, v1) {
-        v1.forEach((k2, v2) {
-          lst.add(_createStepData(v2));
-        });
+        if (v1 is List) {
+          lst.add(_createStepData(v1[0]));
+        } else {
+          v1.forEach((k2, v2) {
+            lst.add(_createStepData(v2));
+          });
+        }
       });
     }
     return lst;

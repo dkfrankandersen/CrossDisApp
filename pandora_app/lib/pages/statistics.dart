@@ -4,9 +4,21 @@ import 'package:pandora_app/controllers/database.dart';
 import 'package:pandora_app/models/step_data.dart';
 import 'package:pandora_app/views/menu.dart';
 import 'package:pandora_app/controllers/chartpointsdemo.dart';
+import 'package:pandora_app/controllers/globals.dart' as globals;
 
-class StatisticsPage extends StatelessWidget {
+class StatisticsPage extends StatefulWidget {
+  @override
+  _MyStatisticsPage createState() => _MyStatisticsPage();
+}
+
+class _MyStatisticsPage extends State<StatisticsPage> {
   Database db = new Database();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     print("StatisticsPage loading");
@@ -29,15 +41,18 @@ class StatisticsPage extends StatelessWidget {
                       future: db.healt.getStepDataPerDay(new DateTime.now()),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
+                          StepDataBar sdb = new StepDataBar(
+                              StepDataBar.createTimeSeries(snapshot.data));
                           return Expanded(
-                              child: new StepDataBar(
-                                  StepDataBar.createTimeSeries(snapshot.data)));
+                            child: sdb,
+                          );
                         } else {
                           return CircularProgressIndicator();
                         }
                       },
                     ),
                     Divider(color: Colors.black),
+                    Text(globals.lastSelectedBar.toString()),
                     // Text("Puls", style: TextStyle(fontSize: 24)),
                     // Expanded(child: new PointsLineChart.withSampleData()),
                     // Divider(color: Colors.black),

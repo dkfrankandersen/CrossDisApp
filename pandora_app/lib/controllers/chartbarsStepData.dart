@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:pandora_app/models/step_data.dart';
+import 'package:pandora_app/controllers/globals.dart' as globals;
 
 class StepDataBar extends StatelessWidget {
   final List<charts.Series<TimeSeriesSteps, DateTime>> seriesList;
@@ -23,6 +24,19 @@ class StepDataBar extends StatelessWidget {
       // If default interactions were removed, optionally add select nearest
       // and the domain highlighter that are typical for bar charts.
       behaviors: [new charts.SelectNearest(), new charts.DomainHighlighter()],
+      selectionModels: [
+        charts.SelectionModelConfig(
+            changedListener: (charts.SelectionModel model) {
+          if (model.hasDatumSelection) {
+            // print(model.selectedSeries[0]
+            // .measureFn(model.selectedDatum[0].index));
+            DateTime lastSelected =
+                model.selectedSeries[0].domainFn(model.selectedDatum[0].index);
+            // print(lastSelected.toString());
+            globals.lastSelectedBar = lastSelected; // TODO: dirty hack
+          }
+        })
+      ],
     );
   }
 
