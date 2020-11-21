@@ -32,25 +32,51 @@ class HealtDatabase {
     }
   }
 
-  Future<void> saveStepCount(StepData sd) async {
+  // Future<void> saveStepCount(StepData sd) async {
+  //   String dtChild = DateFormat('yyyy/MM/dd/HH').format(sd.datetime);
+  //   String minIntVal = _minutInterVal(sd.datetime.minute);
+  //   String refPath =
+  //       'users/' + this._userId + '/steps/' + dtChild + '/' + minIntVal;
+  //   print("sd: ${sd.datetime} - ${sd.steps}");
+  //   this._dbRef.child(refPath).set(sd.toJson());
+  // }
+
+  Future<void> updateStepCount(StepData sd) async {
     String dtChild = DateFormat('yyyy/MM/dd/HH').format(sd.datetime);
     String minIntVal = _minutInterVal(sd.datetime.minute);
     String refPath =
         'users/' + this._userId + '/steps/' + dtChild + '/' + minIntVal;
-    print("sd: ${sd.datetime} - ${sd.steps}");
+    StepData sddb = await getStepData(sd.datetime);
+    if (sddb != null) {
+      sd.steps = sd.steps + sddb.steps;
+    }
     this._dbRef.child(refPath).set(sd.toJson());
   }
 
   StepData _createStepData(Map<dynamic, dynamic> record) {
     DateTime dt = DateTime.parse(record['datetime']);
-    StepData sd = new StepData(this._userId, dt, record['steps']);
+    StepData sd = new StepData(this._userId, dt, int.tryParse(record['steps']));
     return sd;
+  }
+
+  Future<StepData> getStepData(DateTime dt) async {
+    String dtChild = DateFormat('yyyy/MM/dd/HH').format(dt);
+    String minIntVal = _minutInterVal(dt.minute);
+    String refPath =
+        'users/' + this._userId + '/steps/' + dtChild + '/' + minIntVal;
+    print(refPath);
+    DataSnapshot snapshot = await this._dbRef.child(refPath).once();
+    if (snapshot.value != null) {
+      print(snapshot.value);
+      return _createStepData(snapshot.value);
+    } else {
+      return null;
+    }
   }
 
   Future<List<StepData>> getStepDataPrDay(DateTime dt) async {
     String dtChild = DateFormat('yyyy/MM/HH').format(dt);
     String path = _refUserSteps + dtChild;
-    print(path);
     DataSnapshot snapshot = await this._dbRef.child(path).once();
     List<StepData> lst = [];
     if (snapshot.value != null) {

@@ -4,14 +4,13 @@ import 'package:pandora_app/views/menu.dart';
 import 'package:pandora_app/controllers/database.dart';
 
 class TestPage extends StatelessWidget {
-  int _testingSteps = 0;
   Database db = new Database();
 
   void _updateSteps() {
     DateTime dt = new DateTime.now();
-    _testingSteps = _testingSteps + dt.second;
-    StepData sd = new StepData(db.user.userId, dt, _testingSteps.toString());
-    db.healt.saveStepCount(sd);
+    int _testingSteps = 10;
+    StepData sd = new StepData(db.user.userId, dt, _testingSteps);
+    db.healt.updateStepCount(sd);
   }
 
   @override

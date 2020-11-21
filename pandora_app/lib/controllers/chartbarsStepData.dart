@@ -32,7 +32,7 @@ class StepDataBar extends StatelessWidget {
     List<TimeSeriesSteps> data = [];
     if (stepDataLst != null) {
       for (StepData sd in stepDataLst) {
-        int steps = int.tryParse(sd.steps);
+        int steps = sd.steps;
         data.add(new TimeSeriesSteps(sd.datetime, steps));
       }
     }

@@ -3,7 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 class StepData {
   DateTime datetime;
   String userid;
-  String steps;
+  int steps;
   DatabaseReference _id;
 
   StepData(this.userid, this.datetime, this.steps);
@@ -21,10 +21,17 @@ class StepData {
   }
 
   Map<String, dynamic> toJson() {
-    return {'datetime': formatDate(this.datetime), 'steps': this.steps};
+    return {
+      'datetime': formatDate(this.datetime),
+      'steps': this.steps.toString()
+    };
   }
 
   @override
   String toString() =>
-      this.datetime.toString() + " " + this.userid + " " + this.steps;
+      this.datetime.toString() +
+      " " +
+      this.userid +
+      " " +
+      this.steps.toString();
 }

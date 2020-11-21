@@ -40,6 +40,9 @@ class _MyAppState extends State<StepPage> {
     print(event);
     setState(() {
       _status = event.status;
+      if (_status == 'walking') {
+        _last = _steps;
+      }
       if (_status == 'stopped') {
         _updateSteps(_steps, _last);
       }
@@ -73,34 +76,18 @@ class _MyAppState extends State<StepPage> {
     if (!mounted) return;
   }
 
-  String _setLastStep(String steps, String last) {
-    int l = int.tryParse(last);
-    int s = int.tryParse(steps);
-    if (l == null) {
-      _stepUpdated.add('pl:null');
-      return null;
-    }
-    if (s != null) {
-      _stepUpdated.add('ps:null');
-      return null;
-    }
-    return (l - s).toString();
-  }
-
   void _updateSteps(String steps, String last) {
-    if (steps == last) {
-      _stepUpdated.add('s==k');
-      return;
-    }
-    String s = _setLastStep(steps, last);
-    if (s != null) {
-      DateTime dt = new DateTime.now();
-      StepData sd = new StepData(db.user.userId, dt, s);
-      db.healt.saveStepCount(sd);
-      _stepUpdated.add('update');
-      _last = steps;
+    int s = int.tryParse(steps);
+    int l = int.tryParse(last);
+    if (s == null) {
+      _stepUpdated.add(steps);
+    } else if (l == null) {
+      _stepUpdated.add(last);
     } else {
-      _stepUpdated.add('s:null');
+      DateTime dt = new DateTime.now();
+      StepData sd = new StepData(db.user.userId, dt, (s - l));
+      db.healt.updateStepCount(sd);
+      _stepUpdated.add('OK ${(s - l).toString()}');
     }
   }
 
