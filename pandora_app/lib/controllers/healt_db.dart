@@ -32,21 +32,12 @@ class HealtDatabase {
     }
   }
 
-  // Future<void> saveStepCount(StepData sd) async {
-  //   String dtChild = DateFormat('yyyy/MM/dd/HH').format(sd.datetime);
-  //   String minIntVal = _minutInterVal(sd.datetime.minute);
-  //   String refPath =
-  //       'users/' + this._userId + '/steps/' + dtChild + '/' + minIntVal;
-  //   print("sd: ${sd.datetime} - ${sd.steps}");
-  //   this._dbRef.child(refPath).set(sd.toJson());
-  // }
-
   Future<void> updateStepCount(StepData sd) async {
     String dtChild = DateFormat('yyyy/MM/dd/HH').format(sd.datetime);
     String minIntVal = _minutInterVal(sd.datetime.minute);
     String refPath =
         'users/' + this._userId + '/steps/' + dtChild + '/' + minIntVal;
-    StepData sddb = await getStepData(sd.datetime);
+    StepData sddb = await getStepDataInterval(sd.datetime);
     if (sddb != null) {
       sd.steps = sd.steps + sddb.steps;
     }
@@ -59,15 +50,13 @@ class HealtDatabase {
     return sd;
   }
 
-  Future<StepData> getStepData(DateTime dt) async {
+  Future<StepData> getStepDataInterval(DateTime dt) async {
     String dtChild = DateFormat('yyyy/MM/dd/HH').format(dt);
     String minIntVal = _minutInterVal(dt.minute);
     String refPath =
         'users/' + this._userId + '/steps/' + dtChild + '/' + minIntVal;
-    print(refPath);
     DataSnapshot snapshot = await this._dbRef.child(refPath).once();
     if (snapshot.value != null) {
-      print(snapshot.value);
       return _createStepData(snapshot.value);
     } else {
       return null;

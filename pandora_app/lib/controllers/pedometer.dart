@@ -80,14 +80,14 @@ class _MyAppState extends State<StepPage> {
     int s = int.tryParse(steps);
     int l = int.tryParse(last);
     if (s == null) {
-      _stepUpdated.add(steps);
+      _stepUpdated.add('s(${steps})');
     } else if (l == null) {
-      _stepUpdated.add(last);
+      _stepUpdated.add('l${last})');
     } else {
       DateTime dt = new DateTime.now();
       StepData sd = new StepData(db.user.userId, dt, (s - l));
       db.healt.updateStepCount(sd);
-      _stepUpdated.add('OK ${(s - l).toString()}');
+      _stepUpdated.add('OK(${(s - l).toString()})');
     }
   }
 
