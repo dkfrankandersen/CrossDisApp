@@ -5,13 +5,6 @@ import 'package:pandora_app/models/step_data.dart';
 import 'package:pandora_app/views/menu.dart';
 import 'package:intl/intl.dart';
 
-// class LabelEventPage extends StatefulWidget {
-//   LabelEventPage({Key key}) : super(key: key);
-
-//   @override
-//   _LabelEventState createState() => _LabelEventState(dateTime, steps);
-// }
-
 class LabelEventPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   Label label;
@@ -38,7 +31,7 @@ class LabelEventPage extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     child: Text(
                       'DateTime: ' +
-                          DateFormat('yyyy-MM-dd HH:MM:ss')
+                          DateFormat('yyyy-MM-dd HH:mm:ss')
                               .format(label.getDateTime()),
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

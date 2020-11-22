@@ -116,24 +116,24 @@ class _MyAppState extends State<StepPage> {
               Divider(color: Colors.black),
               Text(
                 'User: ' + db.user.userId,
-                style: TextStyle(fontSize: 40),
+                style: TextStyle(fontSize: 32),
               ),
               Text(
                 'Total Steps Taken:',
-                style: TextStyle(fontSize: 30),
+                style: TextStyle(fontSize: 32),
               ),
               Text(
                 _steps,
-                style: TextStyle(fontSize: 60),
+                style: TextStyle(fontSize: 40),
               ),
               Divider(
-                height: 100,
+                height: 30,
                 thickness: 0,
                 color: Colors.white,
               ),
               Text(
                 'Pedestrian status:',
-                style: TextStyle(fontSize: 30),
+                style: TextStyle(fontSize: 32),
               ),
               Icon(
                 _status == 'walking'

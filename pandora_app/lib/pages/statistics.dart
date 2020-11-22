@@ -43,9 +43,17 @@ class _MyStatisticsPage extends State<StatisticsPage> {
                     Text('Enjoy all your data at one place!',
                         style: TextStyle(fontSize: 26)),
                     Divider(color: Colors.black),
-                    Text('Steps Today', style: TextStyle(fontSize: 24)),
+                    Text('Steps Yesterday', style: TextStyle(fontSize: 24)),
                     FutureBuilder<List<StepData>>(
-                      future: db.healt.getStepDataPerDay(new DateTime.now()),
+                      future: db.healt.getStepDataPerDay(new DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day,
+                              0,
+                              0,
+                              0,
+                              0)
+                          .subtract(Duration(days: 1))),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
                           StepDataBar sdb = new StepDataBar(
