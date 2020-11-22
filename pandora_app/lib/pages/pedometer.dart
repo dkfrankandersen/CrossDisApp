@@ -21,7 +21,7 @@ class _MyAppState extends State<StepPage> {
   String _status = '?', _steps = '?';
   String _last = '?';
   List<String> _stepUpdated = [];
-  Database db = new Database();
+  Database db = Database.instance();
   BaseDevice baseDevice;
 
   _MyAppState() {

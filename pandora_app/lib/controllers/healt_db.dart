@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:pandora_app/models/label.dart';
 import 'package:pandora_app/models/step_data.dart';
 import 'package:pandora_app/models/user.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,7 @@ class HealtDatabase {
   String _userId;
   String _refUserSteps;
   List<StepData> sdLst = [];
+  List<Label> labels = [];
 
   HealtDatabase(DatabaseReference dbRef, User user) {
     this._dbRef = dbRef;

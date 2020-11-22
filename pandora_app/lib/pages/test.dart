@@ -4,7 +4,7 @@ import 'package:pandora_app/views/menu.dart';
 import 'package:pandora_app/controllers/database.dart';
 
 class TestPage extends StatelessWidget {
-  Database db = new Database();
+  Database db = Database.instance();
 
   void _updateSteps() {
     DateTime dt = new DateTime.now();

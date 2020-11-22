@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:pandora_app/models/step_data.dart';
 import 'package:pandora_app/controllers/globals.dart' as globals;
+import 'package:pandora_app/pages/label_event.dart';
 
 class StepDataBar extends StatelessWidget {
   final List<charts.Series<TimeSeriesSteps, DateTime>> seriesList;
@@ -28,12 +29,16 @@ class StepDataBar extends StatelessWidget {
         charts.SelectionModelConfig(
             changedListener: (charts.SelectionModel model) {
           if (model.hasDatumSelection) {
-            // print(model.selectedSeries[0]
-            // .measureFn(model.selectedDatum[0].index));
-            DateTime lastSelected =
+            DateTime selectedBarDateTime =
                 model.selectedSeries[0].domainFn(model.selectedDatum[0].index);
-            // print(lastSelected.toString());
-            globals.lastSelectedBar = lastSelected; // TODO: dirty hack
+            int selectedBarValue =
+                model.selectedSeries[0].measureFn(model.selectedDatum[0].index);
+            print(selectedBarDateTime.toString());
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => new LabelEventPage(
+                        selectedBarDateTime, selectedBarValue)));
           }
         })
       ],

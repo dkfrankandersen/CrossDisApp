@@ -6,7 +6,7 @@ import 'package:pandora_app/views/menu.dart';
 
 class DevicesPage extends StatelessWidget {
   final List<Widget> deviceWidgets = [];
-  Database db = new Database();
+  Database db = Database.instance();
   DevicesPage() {
     // add all to container
     for (BaseDevice bd in db.items.getBaseDevices()) {
@@ -85,7 +85,6 @@ class BaseDeviceContainer extends StatelessWidget {
         ),
         onTap: () {
           print("tapped on " + baseDevice.name);
-          // Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(

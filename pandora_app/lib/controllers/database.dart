@@ -8,11 +8,19 @@ class Database {
   HealtDatabase healt;
   DatabaseReference _dbRef;
   User user;
+  static Database _db;
 
   Database() {
     this._dbRef = FirebaseDatabase.instance.reference();
     this.user = new User('demoUser');
     this.items = new ItemDatabase();
     this.healt = new HealtDatabase(this._dbRef, user);
+  }
+
+  static Database instance() {
+    if (_db == null) {
+      _db = new Database();
+    }
+    return _db;
   }
 }
