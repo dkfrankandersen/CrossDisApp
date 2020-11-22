@@ -1,5 +1,5 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:pandora_app/models/basedevice.dart';
 import 'package:pandora_app/models/step_data.dart';
 import 'dart:async';
 import 'package:pedometer/pedometer.dart';
@@ -22,6 +22,14 @@ class _MyAppState extends State<StepPage> {
   String _last = '?';
   List<String> _stepUpdated = [];
   Database db = new Database();
+  BaseDevice baseDevice;
+
+  _MyAppState() {
+    List<BaseDevice> baseDevices = db.items.getBaseDevices();
+    if (baseDevices.isNotEmpty) {
+      this.baseDevice = baseDevices[0];
+    }
+  }
 
   @override
   void initState() {
@@ -104,12 +112,14 @@ class _MyAppState extends State<StepPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              baseDevice.getImage(),
+              Divider(color: Colors.black),
               Text(
                 'User: ' + db.user.userId,
                 style: TextStyle(fontSize: 40),
               ),
               Text(
-                'Steps taken:',
+                'Total Steps Taken:',
                 style: TextStyle(fontSize: 30),
               ),
               Text(

@@ -5,7 +5,7 @@ import 'package:pandora_app/pages/shop.dart';
 import 'package:pandora_app/pages/statistics.dart';
 import 'package:pandora_app/pages/devices.dart';
 import 'package:pandora_app/pages/jewellery.dart';
-import 'package:pandora_app/controllers/pedometer.dart';
+import 'package:pandora_app/pages/pedometer.dart';
 import 'package:pandora_app/pages/test.dart';
 
 class MainMenuDrawer extends StatelessWidget {
