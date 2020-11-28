@@ -5,19 +5,40 @@ import 'package:pandora_app/models/label.dart';
 import 'package:pandora_app/models/step_data.dart';
 import 'package:pandora_app/views/menu.dart';
 
-class StatisticsPage extends StatefulWidget {
+class StatisticsLabledPage extends StatefulWidget {
   @override
   _MyStatisticsPage createState() => _MyStatisticsPage();
 }
 
-class _MyStatisticsPage extends State<StatisticsPage> {
+class _MyStatisticsPage extends State<StatisticsLabledPage> {
   Database db = Database.instance();
+  List<StepData> lst = [];
   List<Widget> labelWidgets = [];
 
-  _MyStatisticsPage() {
-    for (Label label in db.healt.labels) {
+  _MyStatisticsPage();
+
+  List<Widget> labelWidgetsList(List<StepData> lst) {
+    List<Widget> labelWidgets = [];
+    for (StepData sd in lst) {
+      Label label = new Label(sd.datetime, sd.steps);
+      int s = sd.steps;
+      if (s == 0) {
+        label.description = 'Nothing going on here';
+      } else if (s > 0 && s <= 30) {
+        label.description = 'slow moment';
+      } else if (s > 30 && s <= 200) {
+        label.description = 'At least your are moving';
+      } else if (s > 200 && s <= 500) {
+        label.description = 'Hop Hop';
+      } else if (s > 500 && s <= 1000) {
+        label.description = 'Going fast there!';
+      } else if (s > 1000) {
+        label.description = 'Holy shit superman';
+      }
       labelWidgets.add(new LabelWidget(label));
     }
+    print("labelWidgets ${labelWidgets.length}");
+    return labelWidgets;
   }
 
   @override
@@ -55,8 +76,10 @@ class _MyStatisticsPage extends State<StatisticsPage> {
                           .subtract(Duration(days: 1))),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
+                          labelWidgets = labelWidgetsList(snapshot.data);
                           StepDataBar sdb = new StepDataBar(
                               StepDataBar.createTimeSeries(snapshot.data));
+
                           return Expanded(
                             child: sdb,
                           );
@@ -65,7 +88,6 @@ class _MyStatisticsPage extends State<StatisticsPage> {
                         }
                       },
                     ),
-                    Text('Click on bar to create event'),
                     Divider(color: Colors.black),
                     Text('Your labels', style: TextStyle(fontSize: 26)),
                     Column(

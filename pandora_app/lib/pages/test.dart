@@ -83,7 +83,7 @@ class TestPage extends StatelessWidget {
           if (mapData[h].containsKey(mi)) {
             m = mapData[h][mi][0];
             s = mapData[h][mi][1];
-            DateTime dt = DateTime(2020, 11, 21, h, m, 0, 0);
+            DateTime dt = DateTime(2020, 11, 23, h, m, 0, 0);
             StepData sd = new StepData(db.user.userId, dt, s);
             db.healt.updateStepCount(sd);
           }
