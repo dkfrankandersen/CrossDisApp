@@ -35,16 +35,16 @@ class _MyStatisticsPage extends State<StatisticsPage> {
             appBar: AppBar(
                 title: MenuTextFormat.getAppBarTitleText('My Statistics')),
             drawer: MainMenuDrawer(),
-            body: Container(
-                height: 750,
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: <Widget>[
-                    Text('Enjoy all your data at one place!',
-                        style: TextStyle(fontSize: 26)),
-                    Divider(color: Colors.black),
-                    Text('Steps Yesterday', style: TextStyle(fontSize: 24)),
-                    FutureBuilder<List<StepData>>(
+            body: ListView(
+              padding: EdgeInsets.all(20),
+              children: <Widget>[
+                Text('Enjoy all your data at one place!',
+                    style: TextStyle(fontSize: 26)),
+                Divider(color: Colors.black),
+                Text('Steps Yesterday', style: TextStyle(fontSize: 24)),
+                Container(
+                    height: 300,
+                    child: FutureBuilder<List<StepData>>(
                       future: db.healt.getStepDataPerDay(new DateTime(
                               DateTime.now().year,
                               DateTime.now().month,
@@ -65,15 +65,15 @@ class _MyStatisticsPage extends State<StatisticsPage> {
                           return CircularProgressIndicator();
                         }
                       },
-                    ),
-                    Text('Click on bar to create event'),
-                    Divider(color: Colors.black),
-                    Text('Your labels', style: TextStyle(fontSize: 26)),
-                    Column(
-                      children: labelWidgetsList(),
-                    )
-                  ],
-                ))));
+                    )),
+                Text('Click on bar to create event'),
+                Divider(color: Colors.black),
+                Text('Your labels', style: TextStyle(fontSize: 26)),
+                Column(
+                  children: labelWidgetsList(),
+                )
+              ],
+            )));
   }
 }
 

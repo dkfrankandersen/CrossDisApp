@@ -13,7 +13,6 @@ class StatisticsLabledPage extends StatefulWidget {
 class _MyStatisticsPage extends State<StatisticsLabledPage> {
   Database db = Database.instance();
 
-
   _MyStatisticsPage();
 
   List<Widget> labelWidgetsList(List<StepData> lst) {
@@ -54,16 +53,16 @@ class _MyStatisticsPage extends State<StatisticsLabledPage> {
             appBar: AppBar(
                 title: MenuTextFormat.getAppBarTitleText('My Statistics')),
             drawer: MainMenuDrawer(),
-            body: Container(
-                height: 750,
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: <Widget>[
-                    Text('Enjoy all your data at one place!',
-                        style: TextStyle(fontSize: 26)),
-                    Divider(color: Colors.black),
-                    Text('Steps Yesterday', style: TextStyle(fontSize: 24)),
-                    FutureBuilder<List<StepData>>(
+            body: ListView(
+              padding: EdgeInsets.all(20),
+              children: <Widget>[
+                Text('Enjoy all your data at one place!',
+                    style: TextStyle(fontSize: 26)),
+                Divider(color: Colors.black),
+                Text('Steps Yesterday', style: TextStyle(fontSize: 24)),
+                Container(
+                    height: 300,
+                    child: FutureBuilder<List<StepData>>(
                       future: db.healt.getStepDataPerDay(new DateTime(
                               DateTime.now().year,
                               DateTime.now().month,
@@ -84,33 +83,33 @@ class _MyStatisticsPage extends State<StatisticsLabledPage> {
                           return CircularProgressIndicator();
                         }
                       },
-                    ),
-                    Divider(color: Colors.black),
-                    Text('Your labels', style: TextStyle(fontSize: 26)),
-                    FutureBuilder<List<StepData>>(
-                      future: db.healt.getStepDataPerDay(new DateTime(
-                              DateTime.now().year,
-                              DateTime.now().month,
-                              DateTime.now().day,
-                              0,
-                              0,
-                              0,
-                              0)
-                          .subtract(Duration(days: 1))),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          List<Widget> labelWidgets =
-                              labelWidgetsList(snapshot.data);
-                          return Column(
-                            children: labelWidgets,
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    ),
-                  ],
-                ))));
+                    )),
+                Divider(color: Colors.black),
+                Text('Your labels', style: TextStyle(fontSize: 26)),
+                FutureBuilder<List<StepData>>(
+                  future: db.healt.getStepDataPerDay(new DateTime(
+                          DateTime.now().year,
+                          DateTime.now().month,
+                          DateTime.now().day,
+                          0,
+                          0,
+                          0,
+                          0)
+                      .subtract(Duration(days: 1))),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      List<Widget> labelWidgets =
+                          labelWidgetsList(snapshot.data);
+                      return Column(
+                        children: labelWidgets,
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
+              ],
+            )));
   }
 }
 
