@@ -12,8 +12,7 @@ class StatisticsLabledPage extends StatefulWidget {
 
 class _MyStatisticsPage extends State<StatisticsLabledPage> {
   Database db = Database.instance();
-  List<StepData> lst = [];
-  List<Widget> labelWidgets = [];
+
 
   _MyStatisticsPage();
 
@@ -76,10 +75,8 @@ class _MyStatisticsPage extends State<StatisticsLabledPage> {
                           .subtract(Duration(days: 1))),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
-                          labelWidgets = labelWidgetsList(snapshot.data);
                           StepDataBar sdb = new StepDataBar(
                               StepDataBar.createTimeSeries(snapshot.data));
-
                           return Expanded(
                             child: sdb,
                           );
@@ -90,8 +87,27 @@ class _MyStatisticsPage extends State<StatisticsLabledPage> {
                     ),
                     Divider(color: Colors.black),
                     Text('Your labels', style: TextStyle(fontSize: 26)),
-                    Column(
-                      children: labelWidgets,
+                    FutureBuilder<List<StepData>>(
+                      future: db.healt.getStepDataPerDay(new DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day,
+                              0,
+                              0,
+                              0,
+                              0)
+                          .subtract(Duration(days: 1))),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          List<Widget> labelWidgets =
+                              labelWidgetsList(snapshot.data);
+                          return Column(
+                            children: labelWidgets,
+                          );
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
                     ),
                   ],
                 ))));
@@ -110,13 +126,19 @@ class LabelWidget extends StatelessWidget {
       child: Column(children: [
         Align(
             alignment: Alignment.topLeft,
-            child: Text('DateTime: ' + label.getDateTime().toString())),
+            child: Text(
+                'DateTime: ' + label.getDateTime().toString().substring(0, 16),
+                style: TextStyle(fontSize: 18))),
         Align(
             alignment: Alignment.topLeft,
-            child: Text('Steps: ' + label.getSteps().toString())),
+            child: Text(
+              'Steps: ' + label.getSteps().toString(),
+              style: TextStyle(fontSize: 18),
+            )),
         Align(
             alignment: Alignment.topLeft,
-            child: Text('Description: ' + label.description)),
+            child: Text('Description: ' + label.description,
+                style: TextStyle(fontSize: 14))),
       ]),
     );
   }

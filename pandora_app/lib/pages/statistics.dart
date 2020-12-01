@@ -12,12 +12,13 @@ class StatisticsPage extends StatefulWidget {
 
 class _MyStatisticsPage extends State<StatisticsPage> {
   Database db = Database.instance();
-  List<Widget> labelWidgets = [];
 
-  _MyStatisticsPage() {
+  List<Widget> labelWidgetsList() {
+    List<Widget> labelWidgets = [];
     for (Label label in db.healt.labels) {
       labelWidgets.add(new LabelWidget(label));
     }
+    return labelWidgets;
   }
 
   @override
@@ -69,8 +70,8 @@ class _MyStatisticsPage extends State<StatisticsPage> {
                     Divider(color: Colors.black),
                     Text('Your labels', style: TextStyle(fontSize: 26)),
                     Column(
-                      children: labelWidgets,
-                    ),
+                      children: labelWidgetsList(),
+                    )
                   ],
                 ))));
   }
@@ -88,13 +89,19 @@ class LabelWidget extends StatelessWidget {
       child: Column(children: [
         Align(
             alignment: Alignment.topLeft,
-            child: Text('DateTime: ' + label.getDateTime().toString())),
+            child: Text(
+                'DateTime: ' + label.getDateTime().toString().substring(0, 16),
+                style: TextStyle(fontSize: 18))),
         Align(
             alignment: Alignment.topLeft,
-            child: Text('Steps: ' + label.getSteps().toString())),
+            child: Text(
+              'Steps: ' + label.getSteps().toString(),
+              style: TextStyle(fontSize: 18),
+            )),
         Align(
             alignment: Alignment.topLeft,
-            child: Text('Description: ' + label.description)),
+            child: Text('Description: ' + label.description,
+                style: TextStyle(fontSize: 14))),
       ]),
     );
   }
