@@ -3,6 +3,7 @@ import 'package:pandora_app/controllers/chartbarsStepData.dart';
 import 'package:pandora_app/controllers/database.dart';
 import 'package:pandora_app/models/label.dart';
 import 'package:pandora_app/models/step_data.dart';
+import 'package:pandora_app/views/label_widget.dart';
 import 'package:pandora_app/views/menu.dart';
 
 class StatisticsLabledPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _MyStatisticsPage extends State<StatisticsLabledPage> {
         theme: ThemeData(primaryColor: Color.fromARGB(255, 245, 216, 223)),
         home: Scaffold(
             appBar: AppBar(
-                title: MenuTextFormat.getAppBarTitleText('My Statistics')),
+                title: MenuTextFormat.getAppBarTitleText('Labled Statistics')),
             drawer: MainMenuDrawer(),
             body: ListView(
               padding: EdgeInsets.all(20),
@@ -76,9 +77,7 @@ class _MyStatisticsPage extends State<StatisticsLabledPage> {
                         if (snapshot.connectionState == ConnectionState.done) {
                           StepDataBar sdb = new StepDataBar(
                               StepDataBar.createTimeSeries(snapshot.data));
-                          return Expanded(
-                            child: sdb,
-                          );
+                          return sdb;
                         } else {
                           return CircularProgressIndicator();
                         }
@@ -86,6 +85,7 @@ class _MyStatisticsPage extends State<StatisticsLabledPage> {
                     )),
                 Divider(color: Colors.black),
                 Text('Your labels', style: TextStyle(fontSize: 26)),
+                Divider(color: Colors.black),
                 FutureBuilder<List<StepData>>(
                   future: db.healt.getStepDataPerDay(new DateTime(
                           DateTime.now().year,
@@ -110,35 +110,5 @@ class _MyStatisticsPage extends State<StatisticsLabledPage> {
                 ),
               ],
             )));
-  }
-}
-
-class LabelWidget extends StatelessWidget {
-  final Label label;
-
-  LabelWidget(this.label);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      child: Column(children: [
-        Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-                'DateTime: ' + label.getDateTime().toString().substring(0, 16),
-                style: TextStyle(fontSize: 18))),
-        Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Steps: ' + label.getSteps().toString(),
-              style: TextStyle(fontSize: 18),
-            )),
-        Align(
-            alignment: Alignment.topLeft,
-            child: Text('Description: ' + label.description,
-                style: TextStyle(fontSize: 14))),
-      ]),
-    );
   }
 }

@@ -56,15 +56,6 @@ class StepDataBar extends StatelessWidget {
       }
     }
 
-    if (data.isEmpty) {
-      DateTime now = DateTime.now();
-      for (var i = 0; i < 24; i++) {
-        DateTime dt = DateTime.parse(
-            '${now.year}-${now.month}-${now.day} ${i.toString().padLeft(2, '0')}:00:00.000');
-        data.add(new TimeSeriesSteps(dt, 0));
-      }
-    }
-
     return [
       new charts.Series<TimeSeriesSteps, DateTime>(
         id: 'Steps',

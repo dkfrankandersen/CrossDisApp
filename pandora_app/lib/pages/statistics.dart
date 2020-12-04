@@ -3,6 +3,7 @@ import 'package:pandora_app/controllers/chartbarsStepData.dart';
 import 'package:pandora_app/controllers/database.dart';
 import 'package:pandora_app/models/label.dart';
 import 'package:pandora_app/models/step_data.dart';
+import 'package:pandora_app/views/label_widget.dart';
 import 'package:pandora_app/views/menu.dart';
 
 class StatisticsPage extends StatefulWidget {
@@ -58,51 +59,24 @@ class _MyStatisticsPage extends State<StatisticsPage> {
                         if (snapshot.connectionState == ConnectionState.done) {
                           StepDataBar sdb = new StepDataBar(
                               StepDataBar.createTimeSeries(snapshot.data));
-                          return Expanded(
-                            child: sdb,
-                          );
+                          return sdb;
                         } else {
                           return CircularProgressIndicator();
                         }
                       },
                     )),
-                Text('Click on bar to create event'),
+                Center(
+                    child: Text(
+                  'Click on bar to create event',
+                  style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                )),
                 Divider(color: Colors.black),
                 Text('Your labels', style: TextStyle(fontSize: 26)),
+                Divider(color: Colors.black),
                 Column(
                   children: labelWidgetsList(),
                 )
               ],
             )));
-  }
-}
-
-class LabelWidget extends StatelessWidget {
-  final Label label;
-
-  LabelWidget(this.label);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      child: Column(children: [
-        Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-                'DateTime: ' + label.getDateTime().toString().substring(0, 16),
-                style: TextStyle(fontSize: 18))),
-        Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Steps: ' + label.getSteps().toString(),
-              style: TextStyle(fontSize: 18),
-            )),
-        Align(
-            alignment: Alignment.topLeft,
-            child: Text('Description: ' + label.description,
-                style: TextStyle(fontSize: 14))),
-      ]),
-    );
   }
 }

@@ -46,7 +46,7 @@ class MainMenuDrawer extends StatelessWidget {
         MenuListTile('My Jewellery', 'jewellery'),
         MenuListTile('My Shopping', 'shop'),
         MenuListTile('Logout', 'logout'),
-        // MenuListTile('[Step Demo]', 'steps'),
+        MenuListTile('[Step Demo]', 'steps'),
         // MenuListTile('[Test page]', 'test'),
       ],
     ));
